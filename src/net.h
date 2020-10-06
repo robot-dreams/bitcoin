@@ -614,6 +614,11 @@ enum
 };
 
 bool IsPeerAddrLocalGood(CNode *pnode);
+
+/**
+ * Adds our "best" local address to the batch of addresses we are planning
+ * to relay to a given node as scheduled. The relay is not guaranteed.
+ */
 void AdvertiseLocal(CNode *pnode);
 
 /**
