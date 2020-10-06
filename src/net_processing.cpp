@@ -2478,17 +2478,7 @@ void PeerLogicValidation::ProcessMessage(CNode& pfrom, const std::string& msg_ty
             // connections via the addrman or address relay.
             if (fListen && !m_chainman.ActiveChainstate().IsInitialBlockDownload())
             {
-                CAddress addr = GetLocalAddress(&pfrom.addr, pfrom.GetLocalServices());
-                FastRandomContext insecure_rand;
-                if (addr.IsRoutable())
-                {
-                    LogPrint(BCLog::NET, "ProcessMessages: advertising address %s\n", addr.ToString());
-                    pfrom.PushAddress(addr, insecure_rand);
-                } else if (IsPeerAddrLocalGood(&pfrom)) {
-                    addr.SetIP(addrMe);
-                    LogPrint(BCLog::NET, "ProcessMessages: advertising address %s\n", addr.ToString());
-                    pfrom.PushAddress(addr, insecure_rand);
-                }
+                AdvertiseLocal(&pfrom);
             }
 
             // Get recent addresses
