@@ -4140,7 +4140,9 @@ bool PeerLogicValidation::SendMessages(CNode* pto)
         int64_t nNow = GetTimeMicros();
         auto current_time = GetTime<std::chrono::microseconds>();
 
-        if (pto->RelayAddrsWithConn() && !m_chainman.ActiveChainstate().IsInitialBlockDownload() && pto->m_next_local_addr_send < current_time) {
+        if (pto->RelayAddrsWithConn() && !m_chainman.ActiveChainstate().IsInitialBlockDownload() && fListen &&
+            pto->fSuccessfullyConnected && pto->m_next_local_addr_send < current_time) {
+
             AdvertiseLocal(pto);
             pto->m_next_local_addr_send = PoissonNextSend(current_time, AVG_LOCAL_ADDRESS_BROADCAST_INTERVAL);
         }
