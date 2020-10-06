@@ -197,6 +197,7 @@ void AdvertiseLocal(CNode *pnode)
 {
     if (fListen && pnode->fSuccessfullyConnected)
     {
+    // First consider our "best" addr for the peer, as seen locally.
     CAddress addrLocal = GetLocalAddress(&pnode->addr, pnode->GetLocalServices());
     if (gArgs.GetBoolArg("-addrmantest", false)) {
         // use IPv4 loopback during addrmantest
