@@ -2476,7 +2476,7 @@ void PeerLogicValidation::ProcessMessage(CNode& pfrom, const std::string& msg_ty
             // We skip these operations for BLOCK_RELAY peers to avoid
             // potentially leaking information about our BLOCK_RELAY
             // connections via the addrman or address relay.
-            if (fListen && !::ChainstateActive().IsInitialBlockDownload())
+            if (fListen && !m_chainman.ActiveChainstate().IsInitialBlockDownload())
             {
                 CAddress addr = GetLocalAddress(&pfrom.addr, pfrom.GetLocalServices());
                 FastRandomContext insecure_rand;
@@ -4140,7 +4140,7 @@ bool PeerLogicValidation::SendMessages(CNode* pto)
         int64_t nNow = GetTimeMicros();
         auto current_time = GetTime<std::chrono::microseconds>();
 
-        if (pto->RelayAddrsWithConn() && !::ChainstateActive().IsInitialBlockDownload() && pto->m_next_local_addr_send < current_time) {
+        if (pto->RelayAddrsWithConn() && !m_chainman.ActiveChainstate().IsInitialBlockDownload() && pto->m_next_local_addr_send < current_time) {
             AdvertiseLocal(pto);
             pto->m_next_local_addr_send = PoissonNextSend(current_time, AVG_LOCAL_ADDRESS_BROADCAST_INTERVAL);
         }
