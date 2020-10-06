@@ -195,8 +195,7 @@ bool IsPeerAddrLocalGood(CNode *pnode)
 
 void AdvertiseLocal(CNode *pnode)
 {
-    if (fListen && pnode->fSuccessfullyConnected)
-    {
+    assert(fListen);
     // First consider our "best" addr for the peer, as seen locally.
     CAddress addrLocal = GetLocalAddress(&pnode->addr, pnode->GetLocalServices());
 
@@ -218,7 +217,6 @@ void AdvertiseLocal(CNode *pnode)
     {
         LogPrint(BCLog::NET, "AdvertiseLocal: advertising address %s\n", addrLocal.ToString());
         pnode->PushAddress(addrLocal, rng);
-    }
     }
 }
 
